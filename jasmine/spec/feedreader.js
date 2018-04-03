@@ -98,17 +98,10 @@ $(function() {
          * 写一个测试保证当用 【loadFeed 函数】加载一个【新源】的时候【内容会真的改变】。
          * 记住，loadFeed() 函数是【异步】的。
          */
-        let a = document.querySelector('.feed a'),
-        feed_array = Array.from(a);
-        console.log(feed_array);
-        beforeEach(function(done){
-            loadFeed(3, function(){//3是啥意思
-                done();
-            });
-        });
+
         //调用loadFeed函数之前，无内容
-        it('调用loadFeed函数之前，无内容', function(feed_array){
-          expect(feed_array.length).toEqual(0);
+        it('调用loadFeed函数之前，无内容', function(){
+          expect(document.querySelector('.feed').innerHTML).toBe('');
         });
         //调用loadFeed函数之后，有内容
 
