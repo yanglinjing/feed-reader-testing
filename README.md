@@ -1,8 +1,8 @@
-#Feed Reader Testing
+# Feed Reader Testing
 
 This is my assignment of the front-and-end development course at Udacity.
 
-I wrote a JS file by Jasmine to test a existing webpage provided by Udacity.
+I wrote a JavaScript file called _feedreader.js_ by **Jasmine** to test a existing webpage provided by Udacity.
 
 The original requirements of this assignment are as follows:
 
