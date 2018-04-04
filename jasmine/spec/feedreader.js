@@ -99,9 +99,22 @@ $(function() {
          * 记住，loadFeed() 函数是【异步】的。
          */
 
+         let initialFeedEntry, newFeedEntry;
+
+         beforeEach(function(done){
+            loadFeed(1, function(){
+                newFeedEntry = $('.feed .entry > h2').first().text();
+                loadFeed(0, function(){
+                    initialFeedEntry = $('.feed .entry > h2').first().text();
+                    done();
+                });
+                done();//只有两个done()都执行完毕之后，才会传入it
+            });
+         }, 10000);
+
         //调用loadFeed函数之前，无内容
         it('调用loadFeed函数之前，无内容', function(){
-          expect(document.querySelector('.feed').innerHTML).toBe('');
+          expect(initialFeedEntry).not.toBe(newFeedEntry);
         });
         //调用loadFeed函数之后，有内容
 
