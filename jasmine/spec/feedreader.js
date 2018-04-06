@@ -27,8 +27,12 @@ $(function() {
          */
          it('遍历 allFeeds 对象里面的【所有的源feed】来保证【有链接字段】而且【链接不是空】的',function(){
              allFeeds.forEach(function(feed){//allFeeds里有4个对象
-                 expect(feed.url).toBeDefined();
-                 expect(feed.url).not.toEqual('');
+                 notEmpty(feed.url);
+
+                 //除了检查 url 是否为空外，我们还可以利用【正则表达式】检查【url的格式】是否是有效的:
+                 //使用 【.toMatch 方法】，代码如下
+                 var regularExpressionUrl = /^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/; // 检查 URL 格式是否正确的正规表达式
+                 expect(feed.url).toMatch(regularExpressionUrl); // 检查格式
              });
          });
 
@@ -37,10 +41,15 @@ $(function() {
          */
         it('编写一个测试遍历 allFeeds 对象里面的【所有的源】来保证【有名字字段】而且【不是空的】', function(){
             allFeeds.forEach(function(feed){//allFeeds里有4个对象
-                expect(feed.name).toBeDefined();
-                expect(feed.name).not.toEqual('');
+                notEmpty(feed.name);
             });
         });
+
+        function notEmpty(name) {
+           // 将 url 和 name 的测试方法中，相似的代码都移入到该方法中，避免重复编写相同代码。
+           expect(name).toBeDefined();
+           expect(name).not.toEqual('');
+        }
     });
 
 
@@ -54,6 +63,7 @@ $(function() {
         it('写一个测试用例保证【菜单元素】默认是【隐藏】的', function(){
             expect($('.menu-hidden').length).not.toEqual(0);
         });
+        //除此之外，我们还可以利用 jQuery 的 hasClass() 来判断 body 是否含有名为 menu-hidden 的类名
 
          /* TODO:
           * 写一个测试用例保证当【菜单图标】【被点击】的时候菜单会切换【可见】状态。这个
@@ -82,14 +92,15 @@ $(function() {
          * 和异步的 【done() 】函数。
          */
          beforeEach(function(done){
-            loadFeed(3, function(){
-              done();
-            });
+            loadFeed(0, done);
          });
-         it('在 【.feed 容器元素】里面至少有一个 【.entry 的元素】', function(done){
+         //如果仔细看看 loadFeed 函数的内部，会发现第 2 个参数，要接收的是一个函数，并且这个函数会在 loadFeed 读取数据后执行 ，而 done 就是一个函数, 因此可以直接把函数 done 作为参数传入 loadFeed ： loadFeed(0, done);
+
+
+         it('在 【.feed 容器元素】里面至少有一个 【.entry 的元素】', function(){
            expect($('.feed .entry').length).not.toEqual(0);
-           done();
          });
+         //提示:这里的 it 测试用例中不包含任何的异步操作，所以建议删除100行的 function(done) 可选参数 done
     });
 
     /* TODO: 写一个叫做 "New Feed Selection" 的测试用例 */
